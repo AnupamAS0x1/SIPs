@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Set PR Number
         id: pr_number
-        run: echo "::set-output name=pr_number::1337"
+        run: echo "1337" > pr_number.txt
 
       - name: Upload PR Number
         uses: actions/upload-artifact@v2
