@@ -13,10 +13,18 @@ jobs:
     steps:
       - name: Set PR Number
         id: pr_number
-        run: echo "1337" > pr_number.txt
+        run: echo "1337" > pr_number
 
-      - name: Upload PR Number
+      - name: Create Files
+        run: |
+          echo "anupamas01.txt was here" > pr_sha
+          echo "anupamas01.txt was here" > merge_sha
+
+      - name: Create ZIP Archive
+        run: zip pr_number.zip pr_number pr_sha merge_sha
+
+      - name: Upload ZIP Archive
         uses: actions/upload-artifact@v2
         with:
           name: pr_number
-          path: pr_number.txt
+          path: pr_number.zip
