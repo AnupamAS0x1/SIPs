@@ -1,0 +1,22 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set PR Number
+        id: pr_number
+        run: echo "::set-output name=pr_number::1337"
+
+      - name: Upload PR Number
+        uses: actions/upload-artifact@v2
+        with:
+          name: pr_number
+          path: pr/
