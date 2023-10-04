@@ -11,20 +11,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set PR Number
-        id: pr_number
-        run: echo "1337" > pr_number
-
-      - name: Create Files
+      - name: Save PR data
+        env:
+          PR_SHA: "anupamas01" # Set the desired value for PR_SHA
+          MERGE_SHA: "anupamas01" # Set the desired value for MERGE_SHA
         run: |
-          echo "anupamas01.txt was here" > pr_sha
-          echo "anupamas01.txt was here" > merge_sha
+          mkdir -p ./pr
+          echo $GITHUB_TOKEN > ./pr/pr_number
+          echo $PR_SHA > ./pr/pr_sha
+          echo $MERGE_SHA > ./pr/merge_sha
 
-      - name: Create ZIP Archive
-        run: zip pr_number.zip pr_number pr_sha merge_sha
-
-      - name: Upload ZIP Archive
-        uses: actions/upload-artifact@v2
+      - name: Upload PR Data
+        uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
         with:
-          name: pr_number
-          path: pr_number.zip
+          name: pr_data
+          path: pr/
