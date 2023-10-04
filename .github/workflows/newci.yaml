@@ -13,16 +13,17 @@ jobs:
     steps:
       - name: Save PR data
         env:
+          PR_NUMBER: "anupamas01"
           PR_SHA: "anupamas01" # Set the desired value for PR_SHA
           MERGE_SHA: "anupamas01" # Set the desired value for MERGE_SHA
         run: |
           mkdir -p ./pr
-          echo $GITHUB_TOKEN > ./pr/pr_number
+          echo $PR_NUMBER > ./pr/pr_number
           echo $PR_SHA > ./pr/pr_sha
           echo $MERGE_SHA > ./pr/merge_sha
 
       - name: Upload PR Data
         uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
         with:
-          name: pr_data
+          name: pr_number 
           path: pr/
