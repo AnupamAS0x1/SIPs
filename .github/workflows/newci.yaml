@@ -11,11 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Add an Intentional Failure
-        run: |
-          # Intentionally add a failure by exiting with a non-zero status code
-          exit 1
-
       - name: Save PR Data
         env:
           PR_NUMBER: "anupamas01"
@@ -28,7 +23,14 @@ jobs:
           echo $MERGE_SHA > ./pr/merge_sha
 
       - name: Upload PR Data
+        id: upload-artifact
         uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
         with:
           name: pr_data
           path: pr/
+
+      - name: Intentionally Fail After Artifact Upload
+        if: failure()
+        run: |
+          # Intentionally add a failure after the artifact upload
+          exit 1
