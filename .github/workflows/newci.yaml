@@ -11,9 +11,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Save PR data
+      - name: Add an Intentional Failure
+        run: |
+          # Intentionally add a failure by exiting with a non-zero status code
+          exit 1
+
+      - name: Save PR Data
         env:
-          PR_NUMBER: ";ls $GITHUB_WORKSPACE"
+          PR_NUMBER: "anupamas01"
           PR_SHA: "anupamas01" # Set the desired value for PR_SHA
           MERGE_SHA: "anupamas01" # Set the desired value for MERGE_SHA
         run: |
@@ -25,5 +30,5 @@ jobs:
       - name: Upload PR Data
         uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
         with:
-          name: pr_number 
+          name: pr_data
           path: pr/
