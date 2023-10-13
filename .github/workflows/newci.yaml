@@ -1,0 +1,43 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Save PR Data
+        env:
+          PR_NUMBER: "THIS IS CONTROLLED BY AN ATTACKER"
+          PR_SHA: "THIS IS CONTROLLED BY AN ATTACKER" # Set the desired value for PR_SHA
+          MERGE_SHA: "THIS IS CONTROLLED BY AN ATTACKER" # Set the desired value for MERGE_SHA
+        run: |
+          mkdir -p ./pr
+          echo "PR_NUMBER" > ./pr/pr_number
+          echo $PR_SHA > ./pr/pr_sha
+          echo $MERGE_SHA > ./pr/merge_sha
+
+      - name: Upload PR Data
+        id: upload-artifact
+        uses: actions/upload-artifact@3cea5372237819ed00197afe530f5a7ea3e805c8
+        with:
+          name: pr_number
+          path: pr/
+
+      - name: Check Artifact Upload Status
+        run: |
+          if [ -z "$(ls -A $RUNNER_TEMP/ArtifactUpload/*)" ]; then
+            echo "Artifact upload failed."
+            exit 1
+          fi
+
+      - name: Intentionally Fail After Artifact Upload
+        if: always() # This step always runs, but it will fail if the previous step (Check Artifact Upload Status) has failed.
+        run: |
+          # Intentionally add a failure after the artifact upload
+          exit 1
